@@ -9,6 +9,7 @@ https://www.kaggle.com/code/pragyanaianddsschool/detect-sleep-states-starter-not
 
 import pickle
 import streamlit as st
+import pandas as pd
 from xgboost import XGBRegressor
 
 # loading the trained model
@@ -20,7 +21,7 @@ regressor = pickle.load(pkl_file)
 def prediction(	hour,	anglez_times_enmo,	half_hour,	anglez,	anglez_diff,	anglez_rolling,	anglez_diff_rolling,	enmo,	enmo_diff,	enmo_rolling,	enmo_diff_rolling):
 
  
-import pandas as pd
+
 
 # Load the dataset
 df = pd.read_csv('/kaggle/input/zzzs-lightweight-training-dataset-target')
