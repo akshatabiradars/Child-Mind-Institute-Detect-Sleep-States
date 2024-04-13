@@ -42,7 +42,7 @@ filter_options = {
     "anglez_diff": "anglez_diff",
     "anglez_rolling": "anglez_rolling",
     "	anglez_diff_rolling": "	anglez_diff_rolling",
-    "enmo": "enmo"
+    "enmo": "enmo",
     "enmo_diff":"enmo_diff",
     "enmo_rolling": "henmo_rolling",
     "	enmo_diff_rolling": "	enmo_diff_rolling"
