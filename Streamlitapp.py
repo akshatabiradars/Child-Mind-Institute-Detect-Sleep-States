@@ -49,7 +49,7 @@ img2 = Image.open(os.path.join("input_enmo_target.png"))
 st.image(img2)
 
 st.markdown('Visualization of enmo with sleep periods and model predictions:')
-img3 = Image.open(os.path.join("innput_enmo_target_prediction.png"))
+img3 = Image.open(os.path.join("input_enmo_target_prediction.png"))
 st.image(img3)
 
 
