@@ -13,7 +13,7 @@ import streamlit_ext as ste
 st.markdown("<h1 style='text-align: center; color: black;'>Child Mind Institute challenge - sleep detection</h1>", unsafe_allow_html=True)
 #st.title("Child Mind Institute challenge - sleep detection")
 # image titre
-img_title = Image.open(os.path.join("input", "Health_theme.jpg"))
+img_title = Image.open(os.path.join("Health_theme.jpg"))
 st.image(img_title, caption="Source:https://sleepopolis.com/wp-content/uploads/2022/06/WhatDoesApplesNewSleepAppDo_Header-1024x650.jpg")
 st.markdown("*Detection of sleep onset and wake from wrist-worn accelerometer data*:watch:")
 
@@ -27,7 +27,7 @@ st.markdown('<div style="text-align: justify;">\
 
 st.divider() 
 # logos kaggle and CMI
-img_logos = Image.open(os.path.join("input", "Kaggle_CMI.png"))
+img_logos = Image.open(os.path.join("Kaggle_CMI.png"))
 col1, col2, col3 = st.columns([1.2, 5, 1.2])
 col2.image(img_logos, use_column_width=True)
 
@@ -41,15 +41,15 @@ st.header("Example:mag_right:")
 st.markdown("For one series (records of one accelerometer on several days) we plot the features, then the labelled target and our predictions with an XGBoost Classifier.")
 
 st.markdown('Visualization of the features of the series:')
-img1 = Image.open(os.path.join("input", "enmo_anglez.png"))
+img1 = Image.open(os.path.join("enmo_anglez.png"))
 st.image(img1)
 
 st.markdown('Visualization of enmo with sleep periods:zzz: (given by kaggle):')
-img2 = Image.open(os.path.join("input", "enmo_target.png"))
+img2 = Image.open(os.path.join("enmo_target.png"))
 st.image(img2)
 
 st.markdown('Visualization of enmo with sleep periods and model predictions:')
-img3 = Image.open(os.path.join("input", "enmo_target_prediction.png"))
+img3 = Image.open(os.path.join("enmo_target_prediction.png"))
 st.image(img3)
 
 
@@ -95,7 +95,7 @@ else:
         with st.spinner("Loading pipeline..."):
 
             # load pipeline
-            fp_pipeline = os.path.join("input", "pipeline_01.pkl")
+            fp_pipeline = os.path.join("pipeline_01.pkl")
             pipeline_1 = pickle.load(open(fp_pipeline, 'rb'))
 
         with st.spinner("Predictions..."):
