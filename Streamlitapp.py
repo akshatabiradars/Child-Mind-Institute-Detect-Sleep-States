@@ -45,7 +45,7 @@ img1 = Image.open(os.path.join("input_enmo_anglez.png"))
 st.image(img1)
 
 st.markdown('Visualization of enmo with sleep periods:zzz: (given by kaggle):')
-img2 = Image.open(os.path.join("enmo_target.png"))
+img2 = Image.open(os.path.join("input_enmo_target.png"))
 st.image(img2)
 
 st.markdown('Visualization of enmo with sleep periods and model predictions:')
