@@ -11,3 +11,11 @@ Seaborn: Statistical data visualization library based on Matplotlib.
 SciPy: Library for scientific computing and statistical functions.
 joblib: Library for persisting scikit-learn models to disk.
 PyTorch: Deep learning framework for building neural networks.
+
+pandas
+numpy
+matplotlib
+seaborn
+pickle5
+scikit-learn
+xgboost
