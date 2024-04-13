@@ -19,12 +19,7 @@ regressor = pickle.load(pkl_file)
 @st.cache_data()
 # defining the function which will make the prediction using the data which the user inputs
 def prediction(	hour,	anglez_times_enmo,	half_hour,	anglez,	anglez_diff,	anglez_rolling,	anglez_diff_rolling,	enmo,	enmo_diff,	enmo_rolling,	enmo_diff_rolling):
-
- 
-
-
-# Load the dataset
-df = pd.read_csv('/kaggle/input/zzzs-lightweight-training-dataset-target')
+ df = pd.read_csv('/kaggle/input/zzzs-lightweight-training-dataset-target')
 
 # Title of the app
 st.title('Exploring zzzs-lightweight-training-dataset-target')
