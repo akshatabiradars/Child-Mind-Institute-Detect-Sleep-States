@@ -7,22 +7,14 @@ import pyarrow
 import fastparquet
 import os
 import pickle
-
 from utils import *
-
-    
-
 import streamlit_ext as ste
-    
-
 
 st.markdown("<h1 style='text-align: center; color: black;'>Child Mind Institute challenge - sleep detection</h1>", unsafe_allow_html=True)
 #st.title("Child Mind Institute challenge - sleep detection")
-
 # image titre
-img_title = Image.open(os.path.join("input", "Health_Theme.jpg"))
-st.image(img_title, caption="Source: mouser.in/blog/remote-sensing-fosters-healthier-lives")
-
+img_title = Image.open(os.path.join("input", "input health theme 1.jpg"))
+st.image(img_title, caption="Source:https://sleepopolis.com/wp-content/uploads/2022/06/WhatDoesApplesNewSleepAppDo_Header-1024x650.jpg")
 st.markdown("*Detection of sleep onset and wake from wrist-worn accelerometer data*:watch:")
 
 st.markdown('<div style="text-align: justify;">\
@@ -33,9 +25,7 @@ st.markdown('<div style="text-align: justify;">\
                 unsafe_allow_html=True)
 
 
-st.divider()
-
-
+st.divider() 
 # logos kaggle and CMI
 img_logos = Image.open(os.path.join("input", "Kaggle_CMI.png"))
 col1, col2, col3 = st.columns([1.2, 5, 1.2])
@@ -194,21 +184,14 @@ if selected_series != None:
 
     with st.spinner("Creating prediction file..."):
         prediction_file_2 = df_prediction_2.to_csv().encode('utf-8')
-
-
+        
     ste.download_button(
         label="Download prediction file",
         data=prediction_file_2,
         file_name="predictions.csv",
         mime='text/csv'
         )
-
-
-
 line_break()
-
-
-
 st.divider()
 
 st.markdown("<div style='text-align: center; color: #505050;'>Sources</div>", unsafe_allow_html=True)
