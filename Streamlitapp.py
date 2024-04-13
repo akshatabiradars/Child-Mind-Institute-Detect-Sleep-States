@@ -27,7 +27,7 @@ st.markdown('<div style="text-align: justify;">\
 
 st.divider() 
 # logos kaggle and CMI
-img_logos = Image.open(os.path.join("Kaggle_CMI.png"))
+img_logos = Image.open(os.path.join("input_Kaggle_CMI.png"))
 col1, col2, col3 = st.columns([1.2, 5, 1.2])
 col2.image(img_logos, use_column_width=True)
 
@@ -41,7 +41,7 @@ st.header("Example:mag_right:")
 st.markdown("For one series (records of one accelerometer on several days) we plot the features, then the labelled target and our predictions with an XGBoost Classifier.")
 
 st.markdown('Visualization of the features of the series:')
-img1 = Image.open(os.path.join("enmo_anglez.png"))
+img1 = Image.open(os.path.join("input_enmo_anglez.png"))
 st.image(img1)
 
 st.markdown('Visualization of enmo with sleep periods:zzz: (given by kaggle):')
@@ -49,7 +49,7 @@ img2 = Image.open(os.path.join("enmo_target.png"))
 st.image(img2)
 
 st.markdown('Visualization of enmo with sleep periods and model predictions:')
-img3 = Image.open(os.path.join("enmo_target_prediction.png"))
+img3 = Image.open(os.path.join("innput_enmo_target_prediction.png"))
 st.image(img3)
 
 
