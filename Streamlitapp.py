@@ -78,7 +78,7 @@ st.write("---")
 st.write("Created with Streamlit - A Simple and Interactive Way to Explore Data")
 
     # when 'Predict' is clicked, make the prediction and store it
-    if st.button("Predict"):
+if st.button("Predict"):
         result = prediction(hour,	anglez_times_enmo,	half_hour,	anglez,	anglez_diff,	anglez_rolling,	anglez_diff_rolling,	enmo,	enmo_diff,	enmo_rolling,	enmo_diff_rolling)
 
         st.success('Your Sleep state Prediction is {}'.format(result))
