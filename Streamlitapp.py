@@ -6,11 +6,11 @@ from PIL import Image
 import pyarrow
 import fastparquet
 import os
-import pickle
+import pickle 
 from utils import *
 import streamlit_ext as ste
 
-st.markdown("<h1 style='text-align: center; color: black;'>Child Mind Institute challenge - sleep detection</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: white;'>Child Mind Institute challenge - sleep detection</h1>", unsafe_allow_html=True)
 #st.title("Child Mind Institute challenge - sleep detection")
 # image titre
 img_title = Image.open(os.path.join("input_Health_Theme.jpg"))
