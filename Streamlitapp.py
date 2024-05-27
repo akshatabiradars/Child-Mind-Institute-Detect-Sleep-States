@@ -1,14 +1,14 @@
-import streamlit as st
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-from PIL import Image
-import pyarrow
-import fastparquet
-import os
-import pickle 
+import streamlit as st # Streamlit is a framework for creating web applications, especially for data science and machine learning.
+import numpy as np #NumPy is a library for numerical computing in Python. It provides support for arrays, matrices, and many mathematical functions.
+import matplotlib.pyplot as plt #Matplotlib is a plotting library for Python. pyplot is a module within Matplotlib that provides a MATLAB-like interface for creating static, interactive, and animated plots.
+import pandas as pd #Pandas is a data manipulation and analysis library. It provides data structures like DataFrames and Series to handle and analyze data efficiently.
+from PIL import Image #(PythonImageLibrary),now maintained as Pillow, is a library for opening, manipulating, and saving image files. Image is a module within PIL that provides a class with methods for dealing with images.
+import pyarrow #PyArrow is a cross-language development platform for in-memory data. It’s often used for handling large datasets and optimizing data storage formats.
+import fastparquet #Fastparquet is a Python library for reading and writing the Parquet format, which is a columnar storage file format optimized for use with big data processing frameworks.
+import os #OS is a standard library module that provides a way to interact with the operating system, allowing for tasks such as file and directory manipulation.
+import pickle #Pickle is a module used for serializing and deserializing Python objects.
 from utils import *
-import streamlit_ext as ste
+import streamlit_ext as ste #This line imports a custom extension for Streamlit named streamlit_ext. The ste alias is used to reference this module’s functions. Like the utils module, its specific contents are unknown without more context.
 
 st.markdown("<h1 style='text-align: center; color: white;'>Child Mind Institute Detect - sleep states</h1>", unsafe_allow_html=True)
 #st.title("Child Mind Institute Detect- sleep states")
