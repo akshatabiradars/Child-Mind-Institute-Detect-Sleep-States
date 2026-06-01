@@ -1,0 +1,6 @@
+# Development dependencies (testing + linting).
+# Install the runtime deps first:  pip install -r requirements.txt
+-r requirements.txt
+
+pytest>=8.0
+ruff>=0.5
