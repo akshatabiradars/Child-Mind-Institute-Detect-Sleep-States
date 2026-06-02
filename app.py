@@ -17,6 +17,7 @@ Run with::
 """
 
 import hashlib
+import inspect
 import json
 import os
 import pickle
@@ -110,6 +111,22 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+
+# `key=` was added to st.plotly_chart in Streamlit 1.30. On 1.30+ (incl. the
+# version Streamlit Cloud installs) a unique key prevents
+# StreamlitDuplicateElementId when two charts share parameters; on older
+# Streamlit (e.g. 1.28) the kwarg is unsupported, so we pass it only when
+# available.
+_PLOTLY_SUPPORTS_KEY = "key" in inspect.signature(st.plotly_chart).parameters
+
+
+def plot(fig, *, key: str):
+    """st.plotly_chart with a unique key, compatible across Streamlit versions."""
+    if _PLOTLY_SUPPORTS_KEY:
+        st.plotly_chart(fig, use_container_width=True, key=key)
+    else:
+        st.plotly_chart(fig, use_container_width=True)
 
 
 # --- Cached compute ----------------------------------------------------------
@@ -373,9 +390,9 @@ with tab_analyze:
             c7.metric("📈 Longest", f"{m['longest_h']}h")
             c8.metric("📉 Shortest", f"{m['shortest_h']}h")
 
-            st.plotly_chart(
+            plot(
                 plotly_prediction(prepared, submission, sid, show_anglez=show_anglez),
-                use_container_width=True,
+                key=f"timeline_{sid}",
             )
 
             per_night = per_night_breakdown(active_df, submission, sid)
@@ -391,11 +408,11 @@ with tab_analyze:
                 pn_display["confidence"] = pn_display["confidence"].map(lambda v: f"{v:.2f}")
                 st.table(pn_display.set_index("night"))
             with right:
-                st.plotly_chart(plotly_nightly_trend(per_night), use_container_width=True)
+                plot(plotly_nightly_trend(per_night), key=f"trend_{sid}")
 
             actogram = plotly_actogram(prepared, submission, sid)
             if actogram is not None:
-                st.plotly_chart(actogram, use_container_width=True)
+                plot(actogram, key=f"actogram_{sid}")
 
             with st.expander("Predicted events table"):
                 st.dataframe(
@@ -477,14 +494,16 @@ with tab_compare:
                 st.warning("No sleep periods could be derived with the current settings.")
             else:
                 prepared, submission = ctx["prepared"], ctx["submission"]
-                for col, s in ((cc1, a), (cc2, b)):
+                for slot, (col, s) in enumerate([(cc1, a), (cc2, b)]):
                     with col:
                         m = compute_sleep_metrics(active_df, submission, s)
                         st.metric(f"`{s}` · total sleep", m["total_sleep"])
                         st.metric("Periods / efficiency", f"{m['periods']} · {m['efficiency']}%")
-                        st.plotly_chart(
+                        # Key includes the slot index so comparing a series with
+                        # itself (A == B) still yields unique chart IDs.
+                        plot(
                             plotly_prediction(prepared, submission, s),
-                            use_container_width=True,
+                            key=f"compare_{slot}_{s}",
                         )
 
 # ---- Model tab ----
@@ -508,9 +527,9 @@ with tab_model:
             f"{metrics['cv_folds']}-fold GroupKFold over {metrics['n_series']} series."
         )
         if "feature_importances" in metrics:
-            st.plotly_chart(
+            plot(
                 plotly_feature_importance(metrics["feature_importances"]),
-                use_container_width=True,
+                key="feature_importance",
             )
     else:
         st.info("No metrics file. Run `python scripts/train_model.py` to generate one.")
