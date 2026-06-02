@@ -10,7 +10,7 @@ env/
 ENV/
 
 # Jupyter
-.ipynb_checkpoints/
+#.ipynb_checkpoints/
 
 # Distribution / packaging
 build/

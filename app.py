@@ -23,7 +23,6 @@ import pickle
 
 import pandas as pd
 import streamlit as st
-import streamlit_ext as ste
 from PIL import Image
 
 from utils import (
@@ -406,11 +405,13 @@ with tab_analyze:
 
             d1, d2 = st.columns(2)
             with d1:
-                ste.download_button(
+                st.download_button(
                     label="⬇️ Download predictions (CSV)",
                     data=submission.to_csv(index=False).encode("utf-8"),
                     file_name=f"predictions_{sid}.csv",
                     mime="text/csv",
+                    key=f"dl_pred_{sid}",
+                    use_container_width=True,
                 )
             with d2:
                 st.download_button(
