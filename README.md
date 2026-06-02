@@ -7,11 +7,14 @@
 A Streamlit web app that turns raw accelerometer signals (`enmo` + `anglez`) into
 predicted sleep periods using a trained scikit-learn pipeline.
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Open_App-FF4B4B?logo=streamlit&logoColor=white)](https://child-mind-institute-detect-sleep-states-02.streamlit.app/)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-pipeline-F7931E?logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Kaggle](https://img.shields.io/badge/Kaggle-Competition-20BEFF?logo=kaggle&logoColor=white)](https://www.kaggle.com/competitions/child-mind-institute-detect-sleep-states)
+
+### ▶️ **[Try the live app →](https://child-mind-institute-detect-sleep-states-02.streamlit.app/)**
 
 <img src="input_enmo_target_prediction.png" alt="Predicted sleep onset and wakeup over the enmo signal" width="100%">
 
@@ -61,12 +64,13 @@ indicator while the model runs.
 
 ## 🎬 Demo
 
+**🔗 Live app:** https://child-mind-institute-detect-sleep-states-02.streamlit.app/
+— pick a sample series (or upload your own) and explore the predictions, metrics and
+charts directly in your browser.
+
 | Raw features (`enmo`, `anglez`) | Labelled sleep periods | Model predictions |
 | :---: | :---: | :---: |
 | ![features](input_enmo_anglez.png) | ![target](input_enmo_target.png) | ![prediction](input_enmo_target_prediction.png) |
-
-> _Tip:_ once deployed (e.g. on [Streamlit Community Cloud](https://streamlit.io/cloud)),
-> add the live URL here.
 
 ---
 
