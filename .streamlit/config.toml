@@ -1,10 +1,23 @@
+# Native theming, "StockPeers"-style finish (requires Streamlit >= 1.45).
+# A flat, minimal slate/navy dark theme with a periwinkle accent, visible widget
+# borders and the Space Grotesk typeface. Most styling is done here natively, so
+# the app needs very little custom CSS.
 [theme]
 base = "dark"
-primaryColor = "#FF4B4B"
-backgroundColor = "#0E1117"
-secondaryBackgroundColor = "#1C2333"
-textColor = "#FAFAFA"
-font = "sans serif"
+primaryColor = "#615fff"
+backgroundColor = "#1d293d"
+secondaryBackgroundColor = "#0f172b"
+textColor = "#e2e8f0"
+showWidgetBorder = true
+borderColor = "#314158"
+baseRadius = "0.6rem"
+dataframeHeaderBackgroundColor = "#1d293d"
+font = "'Space Grotesk':https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+baseFontWeight = 300
+baseFontSize = 14
+headingFont = "Space Grotesk"
+headingFontWeights = [300, 400, 400, 300, 300, 300]
+headingFontSizes = ["2.5rem", "1.5rem", "1rem"]
 
 [server]
 maxUploadSize = 200

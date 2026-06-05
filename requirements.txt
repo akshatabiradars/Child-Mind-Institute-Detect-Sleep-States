@@ -16,7 +16,10 @@ scikit-learn==1.3.2
 xgboost==2.0.2
 
 # --- web app + data ---
-streamlit>=1.28,<2
+# Floor raised to 1.45 for the native theming keys used in .streamlit/config.toml
+# (font-from-URL, headingFont, borderColor, baseRadius, showWidgetBorder). These
+# give a polished, CSS-light "StockPeers"-style finish.
+streamlit>=1.45,<2
 pandas>=2.1,<2.3
 numpy>=1.26,<2
 plotly>=5.18

@@ -65,14 +65,48 @@ MODEL_FEATURES = [
 
 REQUIRED_COLUMNS = ["series_id", "step", "timestamp", "anglez", "enmo"]
 
+# --- Chart palette (StockPeers slate / periwinkle) ---------------------------
+# Shared with the app's CSS + the native theme so charts and UI use one palette.
+# Keep these in sync with .streamlit/config.toml and the tokens in ``app.py``.
+ACCENT = "#615fff"   # periwinkle (sleep spans, bars)
+SIGNAL = "#38bdf8"   # sky blue (enmo trace, low end of the actogram)
+ONSET = "#01b574"    # success green
+WAKEUP = "#fb7185"   # rose
+ANGLEZ = "#ffb547"   # amber
+CHART_FONT = "Space Grotesk, system-ui, -apple-system, Segoe UI, sans-serif"
+
 # Plotly template used by every chart. Switch with :func:`set_chart_theme`.
 CHART_TEMPLATE = "plotly_dark"
+# Tracks the active mode so :func:`_base_layout` can pick theme-aware grid lines.
+_CHART_DARK = True
 
 
 def set_chart_theme(dark: bool = True) -> None:
     """Set the Plotly template used by all chart helpers (dark or light)."""
-    global CHART_TEMPLATE
+    global CHART_TEMPLATE, _CHART_DARK
     CHART_TEMPLATE = "plotly_dark" if dark else "plotly_white"
+    _CHART_DARK = dark
+
+
+def _base_layout() -> dict:
+    """Shared Plotly layout: template, font, transparent bg, themed grid.
+
+    Returned as kwargs for ``fig.update_layout(**_base_layout())``. Apply this
+    first; per-chart calls (height, margins, axis titles) run afterwards and
+    correctly override these defaults. Grid lines use the slate border colour
+    (#314158) to match the native theme.
+    """
+    grid = "rgba(49,65,88,0.55)" if _CHART_DARK else "rgba(20,24,60,0.10)"
+    zero = "rgba(49,65,88,0.85)" if _CHART_DARK else "rgba(20,24,60,0.20)"
+    return dict(
+        template=CHART_TEMPLATE,
+        font=dict(family=CHART_FONT),
+        colorway=[ACCENT, SIGNAL, ONSET, WAKEUP, ANGLEZ],
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(gridcolor=grid, zerolinecolor=zero),
+        yaxis=dict(gridcolor=grid, zerolinecolor=zero),
+    )
 
 
 def line_break(n: int = 3) -> None:
@@ -511,7 +545,7 @@ def plotly_prediction(
     fig.add_trace(
         go.Scattergl(
             x=x, y=df_viz["enmo"], mode="lines", name="enmo",
-            line=dict(color="#4C9BE8", width=1),
+            line=dict(color=SIGNAL, width=1),
             hovertemplate="enmo=%{y:.4f}<extra></extra>",
         ),
         row=1, col=1,
@@ -520,7 +554,7 @@ def plotly_prediction(
         fig.add_trace(
             go.Scattergl(
                 x=x, y=df_viz["anglez"], mode="lines", name="anglez",
-                line=dict(color="#F59E0B", width=0.8), opacity=0.6, yaxis="y3",
+                line=dict(color=ANGLEZ, width=0.8), opacity=0.6, yaxis="y3",
                 hovertemplate="anglez=%{y:.1f}<extra></extra>",
             ),
             row=1, col=1,
@@ -537,14 +571,14 @@ def plotly_prediction(
         fig.add_vrect(
             x0=step_to_x.get(onset_step, onset_step),
             x1=step_to_x.get(wakeup_step, wakeup_step),
-            fillcolor="#8B5CF6", opacity=0.18, line_width=0, layer="below",
+            fillcolor=ACCENT, opacity=0.16, line_width=0, layer="below",
             row=1, col=1, **ann,
         )
 
     df_sub = get_series(df_submission, series_id)
     for event_name, color, sym in (
-        ("onset", "#22C55E", "triangle-up"),
-        ("wakeup", "#F43F5E", "triangle-down"),
+        ("onset", ONSET, "triangle-up"),
+        ("wakeup", WAKEUP, "triangle-down"),
     ):
         ev = df_sub[df_sub["event"] == event_name]
         if ev.empty:
@@ -571,8 +605,8 @@ def plotly_prediction(
     fig.add_trace(
         go.Scatter(
             x=x, y=asleep, mode="lines", name="state", line_shape="hv",
-            line=dict(color="#8B5CF6", width=1), fill="tozeroy",
-            fillcolor="rgba(139,92,246,0.35)", showlegend=False,
+            line=dict(color=ACCENT, width=1), fill="tozeroy",
+            fillcolor="rgba(97,95,255,0.35)", showlegend=False,
             hovertemplate="%{customdata}<extra></extra>",
             customdata=np.where(asleep == 1, "asleep", "awake"),
         ),
@@ -580,14 +614,12 @@ def plotly_prediction(
     )
 
     fig.update_layout(
-        template=CHART_TEMPLATE,
+        **_base_layout(),
         title=f"enmo with predicted sleep — {series_id}",
         height=470,
         margin=dict(l=40, r=20, t=60, b=40),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0),
         hovermode="x unified",
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
     )
     fig.update_yaxes(title_text="enmo", row=1, col=1)
     fig.update_yaxes(
@@ -806,21 +838,20 @@ def plotly_actogram(df: pd.DataFrame, df_submission: pd.DataFrame, series_id: st
             z=pivot.values,
             x=[f"{h:02d}" for h in pivot.columns],
             y=[str(d) for d in pivot.index],
-            colorscale=[[0, "rgba(76,155,232,0.05)"], [1, "#8B5CF6"]],
+            # Sky -> periwinkle ramp: faint at "awake", saturated accent at "asleep".
+            colorscale=[[0, "rgba(56,189,248,0.06)"], [0.5, "#38bdf8"], [1, ACCENT]],
             zmin=0, zmax=1,
             colorbar=dict(title="asleep", tickformat=".0%"),
             hovertemplate="%{y} · %{x}:00<br>%{z:.0%} asleep<extra></extra>",
         )
     )
     fig.update_layout(
-        template=CHART_TEMPLATE,
+        **_base_layout(),
         title="Sleep regularity (actogram)",
         xaxis_title="hour of day",
         yaxis_title="date",
         height=max(220, 60 + 26 * len(pivot.index)),
         margin=dict(l=40, r=20, t=50, b=40),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
     )
     return fig
 
@@ -833,20 +864,18 @@ def plotly_nightly_trend(per_night: pd.DataFrame):
         go.Bar(
             x=per_night["night"],
             y=per_night["duration_h"],
-            marker_color="#8B5CF6",
+            marker_color=ACCENT,
             customdata=per_night["confidence"],
             hovertemplate="night %{x}<br>%{y:.2f} h<br>conf=%{customdata:.2f}<extra></extra>",
         )
     )
     fig.update_layout(
-        template=CHART_TEMPLATE,
+        **_base_layout(),
         title="Sleep duration per night",
         xaxis_title="night",
         yaxis_title="hours asleep",
         height=300,
         margin=dict(l=40, r=20, t=50, b=40),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
     )
     return fig
 
@@ -864,18 +893,16 @@ def plotly_feature_importance(importances: dict):
             x=values,
             y=names,
             orientation="h",
-            marker_color="#8B5CF6",
+            marker_color=ACCENT,
             hovertemplate="%{y}: %{x:.3f}<extra></extra>",
         )
     )
     fig.update_layout(
-        template=CHART_TEMPLATE,
+        **_base_layout(),
         title="Feature importances",
         xaxis_title="importance",
         height=420,
         margin=dict(l=10, r=20, t=50, b=40),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
     )
     return fig
 
@@ -891,9 +918,9 @@ def build_html_report(series_id: str, metrics: dict, per_night: pd.DataFrame) ->
 <title>Sleep report — {series_id}</title>
 <style>
  body{{font-family:system-ui,Arial,sans-serif;max-width:820px;margin:32px auto;color:#1a1a2e}}
- h1{{color:#6d28d9}} .kpis{{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0}}
+ h1{{color:#615fff}} .kpis{{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0}}
  .card{{flex:1;min-width:140px;border:1px solid #ddd;border-radius:10px;padding:12px 14px}}
- .card b{{display:block;font-size:1.4rem;color:#6d28d9}}
+ .card b{{display:block;font-size:1.4rem;color:#615fff}}
  table{{width:100%;border-collapse:collapse;margin-top:12px}}
  th,td{{border-bottom:1px solid #eee;padding:8px;text-align:left;font-size:.92rem}}
  th{{color:#666}} .foot{{margin-top:24px;color:#888;font-size:.8rem}}
